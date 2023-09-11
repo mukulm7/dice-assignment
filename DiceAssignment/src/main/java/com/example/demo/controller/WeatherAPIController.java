@@ -22,19 +22,21 @@ public class WeatherAPIController {
     }
 
     @GetMapping("/forecast-summary")
-    public ResponseEntity<CustomResponseWeatherSummary> getWeatherForecastSummary(@RequestParam String city) {
+    public ResponseEntity<Object> getWeatherForecastSummary(@RequestParam String city) {
         String url = "https://forecast9.p.rapidapi.com/rapidapi/forecast/"+ city+"/summary/";
         Object response = restTemplate.getForObject(url, Object.class);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         CustomResponseWeatherSummary response2= mapper.convertValue(response, CustomResponseWeatherSummary.class);
-        return ResponseEntity.ok(response2);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/hourly-forecast")
-    public ResponseEntity<String> getHourlyWeatherForecast(@RequestParam String city) {
+    public ResponseEntity<Object> getHourlyWeatherForecast(@RequestParam String city) {
     	String url = "https://forecast9.p.rapidapi.com/rapidapi/forecast/"+ city+"/hourly/";
-        String response = restTemplate.getForObject(url, String.class);
+    	Object response = restTemplate.getForObject(url, Object.class);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return ResponseEntity.ok(response);
     }
 }
